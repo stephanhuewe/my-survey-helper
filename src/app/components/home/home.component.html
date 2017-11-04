@@ -1,0 +1,92 @@
+<div class="container">
+  <div class="card-container">
+    <div class="ui special cards">
+      <div class="card">
+        <div class="blurring dimmable image" (mouseover)="tempData['dimmer_customer'] = true" (mouseleave)="tempData['dimmer_customer'] = false">
+          <sui-dimmer [(isDimmed)]="tempData['dimmer_customer']" [isClickable]="false">
+            <div class="content">
+              <div class="center">
+                <div>
+                  <div class="ui action input">
+                    <input type="text" placeholder="Search..." autocomplete="off">
+                    <button class="ui icon button">
+                      <i class="search icon"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="ui inverted button dimmer-button" (click)="addCustomer()">Add Customer</div>
+              </div>
+            </div>
+          </sui-dimmer>
+          <img src="../../../assets/images/multy-user.png">
+        </div>
+        <div class="content">
+          <a class="header">Customers</a>
+        </div>
+        <div class="ui blue bottom attached button" (click)="addCustomer()">
+          <i class="add icon"></i>
+          Add Customer
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="blurring dimmable image" (mouseover)="tempData['dimmer_plans'] = true" (mouseleave)="tempData['dimmer_plans'] = false">
+          <sui-dimmer [(isDimmed)]="tempData['dimmer_plans']" [isClickable]="false">
+            <div class="content">
+              <div class="center">
+                <div>
+                  <div class="ui action input">
+                    <input type="text" placeholder="Search..." autocomplete="off">
+                    <button class="ui icon button">
+                      <i class="search icon"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="ui inverted button dimmer-button" (click)="addPlan()">Add Plan</div>
+              </div>
+            </div>
+          </sui-dimmer>
+          <img src="../../../assets/images/plan.png">
+        </div>
+        <div class="content">
+          <a class="header">Plans</a>
+        </div>
+        <div class="ui blue bottom attached button" (click)="addPlan()">
+          <i class="add icon"></i>
+          Add Plan
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="blurring dimmable image" (mouseover)="tempData['dimmer_coat'] = true" (mouseleave)="tempData['dimmer_coat'] = false">
+          <sui-dimmer [(isDimmed)]="tempData['dimmer_coat']" [isClickable]="false">
+            <div class="content">
+              <div class="center">
+                <div>
+                  <div class="ui action input">
+                    <input type="text" placeholder="Search..." autocomplete="off">
+                    <button class="ui icon button">
+                      <i class="search icon"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="ui inverted button dimmer-button" (click)="addCustomer()">Add Coat Order Letter</div>
+              </div>
+            </div>
+          </sui-dimmer>
+          <img src="../../../assets/images/mail.png">
+        </div>
+        <div class="content">
+          <a class="header">Coat Orders</a>
+        </div>
+        <div class="ui blue bottom attached button">
+          <i class="add icon"></i>
+          Add Coat Order
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-add-new-customer #addNewCustomerForm></app-add-new-customer>
+<app-add-new-plan #addNewPlanForm></app-add-new-plan>

@@ -1,0 +1,33 @@
+<ng-template let-context let-modal="modal" #modalTemplate>
+  <div class="header">Add New Customer</div>
+  <div class="content">
+
+    <form class="ui form" [formGroup]="customerForm" novalidate #cusForm>
+      <div class="field" [ngClass]="{error: customerForm.get('name').invalid && customerForm.get('name').touched}">
+        <label>Name</label>
+        <input type="text" name="cus_name" placeholder="Customer Name" formControlName="name">
+        <div class="ui pointing red basic label" *ngIf="customerForm.get('name').invalid && customerForm.get('name').touched">
+          Name can not empty
+        </div>
+      </div>
+      <div class="field">
+        <label>Telephone</label>
+        <input type="text" name="cus_tp" placeholder="Telephone Number" [textMask]="{mask: telMask}"
+               formControlName="tel">
+      </div>
+      <div class="field">
+        <label>Address</label>
+        <textarea rows="4" name="cus_address" placeholder="Address" formControlName="address"></textarea>
+      </div>
+      <div class="field">
+        <label>ID Number</label>
+        <input type="text" name="cus_id" placeholder="Identity card number" maxlength="12" formControlName="id">
+      </div>
+    </form>
+
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.deny('denied')">Cancel</button>
+    <button class="ui green button" (click)="saveCustomer() ? modal.approve('ok'): showError() " autofocus>SAVE</button>
+  </div>
+</ng-template>

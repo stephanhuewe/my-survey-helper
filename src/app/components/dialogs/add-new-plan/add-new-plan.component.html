@@ -1,0 +1,97 @@
+<ng-template let-context let-modal="modal" #modalTemplate>
+  <div class="header">Add New Plan</div>
+  <div class="content">
+
+    <form class="ui form" [formGroup]="planForm" novalidate #planFormId>
+      <div class="eight wide field"
+           [ngClass]="{error: planForm.get('planNumber').invalid && planForm.get('planNumber').touched}">
+        <label>Plan Number</label>
+        <input type="number" name="planNumber" placeholder="Plan Number" formControlName="planNumber">
+        <div class="ui pointing red basic label"
+             *ngIf="planForm.get('planNumber').invalid && planForm.get('planNumber').touched">
+          Plan Number {{
+          planForm.get('planNumber').hasError('required') ? 'can not empty' :
+          (planForm.get('planNumber').hasError('negative') ? 'should be positive' :
+          (planForm.get('planNumber').hasError('int') ? 'should be an integer': ''))
+          }}
+        </div>
+      </div>
+      <div class="tow fields">
+        <div class="field">
+          <label>Date of Plan</label>
+          <input type="text" name="doPlan" placeholder="Date of Plan" suiDatepicker pickerMode="date"
+                 formControlName="doPlan">
+        </div>
+        <div class="field">
+          <label>Date of Survey</label>
+          <input type="text" name="doSurvey" placeholder="Date of Survey" suiDatepicker pickerMode="date"
+                 formControlName="doSurvey">
+        </div>
+
+      </div>
+      <div class="ui dividing header">Extent</div>
+      <div class="four fields">
+        <div class="field" [ngClass]="{error: planForm.get('extentA').invalid && planForm.get('extentA').touched}">
+          <label>Acre</label>
+          <input type="number" name="extentA" placeholder="Acre" formControlName="extentA">
+          <div class="ui pointing red basic label"
+               *ngIf="planForm.get('extentA').invalid && planForm.get('extentA').touched">
+            Acre number {{planForm.get('extentA').hasError('negative') ? 'should be positive' : ''}}
+          </div>
+        </div>
+        <div class="field" [ngClass]="{error: planForm.get('extentR').invalid && planForm.get('extentR').touched}">
+          <label>Rood</label>
+          <input type="number" name="extentR" placeholder="Rood" formControlName="extentR">
+          <div class="ui pointing red basic label"
+               *ngIf="planForm.get('extentR').invalid && planForm.get('extentR').touched">
+            Rood number {{planForm.get('extentR').hasError('negative') ? 'should be positive' : ''}}
+          </div>
+        </div>
+        <div class="field" [ngClass]="{error: planForm.get('extentP').invalid && planForm.get('extentP').touched}">
+          <label>Perch</label>
+          <input type="number" name="extentP" placeholder="Perch" formControlName="extentP">
+          <div class="ui pointing red basic label"
+               *ngIf="planForm.get('extentP').invalid && planForm.get('extentP').touched">
+            Perch number {{planForm.get('extentP').hasError('negative') ? 'should be positive' : ''}}
+          </div>
+        </div>
+        <div class="field" [ngClass]="{error: planForm.get('extentHa').invalid && planForm.get('extentHa').touched}">
+          <label>Hectare</label>
+          <input type="number" name="extentHa" placeholder="Hectare" formControlName="extentHa">
+          <div class="ui pointing red basic label"
+               *ngIf="planForm.get('extentHa').invalid && planForm.get('extentHa').touched">
+            Hectare number {{planForm.get('extentHa').hasError('negative') ? 'should be positive' : ''}}
+          </div>
+        </div>
+      </div>
+      <div class="ui dividing header">Location</div>
+      <div class="field">
+        <label>District</label>
+        <sui-select class="selection"
+                    [options]="options"
+                    labelField="name"
+                    valueField="val"
+                    #select>
+          <sui-select-option *ngFor="let option of districtList"
+                             [value]="option">
+          </sui-select-option>
+        </sui-select>
+      </div>
+      <div class="field">
+        <label>Village</label>
+        <input type="text" name="village" placeholder="Village" formControlName="village">
+      </div>
+
+      <div class="field">
+        <label>Land Name</label>
+        <input type="text" name="landName" placeholder="Land Name" formControlName="landName">
+      </div>
+
+    </form>
+
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.deny('denied')">Cancel</button>
+    <button class="ui green button" (click)="savePlan() ? modal.approve('ok'): showError() " autofocus>SAVE</button>
+  </div>
+</ng-template>

@@ -1,17 +1,17 @@
 .container {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, rgb(130, 241, 129) 0%, rgb(62, 255, 116) 50%, rgb(36, 226, 0) 51%, rgba(183,222,237,1) 100%);
+  text-align: center;
+}
 
-  background: url(../../../assets/background.jpg) no-repeat center fixed;
-  -webkit-background-size: cover; /* pour anciens Chrome et Safari */
-  background-size: cover; /* version standardisée */
+.card-container {
+  padding: 25px;
+  display: inline-block;
+  margin: 10px auto;
+  box-shadow: 9px 10px 36px 1px rgba(0,0,0,0.67);
+}
 
-  .title {
-    color: white;
-    margin:0;
-    padding:50px 20px;
-  }
-
+.dimmer-button {
+  margin-top: 15px;
 }
