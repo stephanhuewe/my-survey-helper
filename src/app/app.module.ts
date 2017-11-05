@@ -18,6 +18,9 @@ import { AddNewCustomerComponent } from './components/dialogs/add-new-customer/a
 import { TextMaskModule } from 'angular2-text-mask';
 import { AddNewPlanComponent } from './components/dialogs/add-new-plan/add-new-plan.component';
 import { NumberOnlyFieldDirective } from './providers/number-only-field.directive';
+import { AddNewCoatOrderComponent } from './components/dialogs/add-new-coat-order/add-new-coat-order.component';
+import { CustomerListComponent } from './components/grids/customer-list/customer-list.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,8 @@ import { NumberOnlyFieldDirective } from './providers/number-only-field.directiv
     AddNewCustomerComponent,
     AddNewPlanComponent,
     NumberOnlyFieldDirective,
+    AddNewCoatOrderComponent,
+    CustomerListComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +40,7 @@ import { NumberOnlyFieldDirective } from './providers/number-only-field.directiv
     AppRoutingModule,
     SuiModule,
     TextMaskModule,
+    NgxDatatableModule,
   ],
   providers: [ElectronService, DataService],
   bootstrap: [AppComponent]

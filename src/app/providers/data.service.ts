@@ -42,7 +42,7 @@ export class DataService {
     return this.ipcCall({
       model: model,
       _id: id,
-      operations: operations.find_id
+      operation: operations.find_id
     })
   }
 
@@ -50,16 +50,33 @@ export class DataService {
     return this.ipcCall({
       model: model,
       query: query,
-      operations: operations.find_one
+      operation: operations.find_one
     })
   }
 
   public count(model, query): Promise<any> {
     return this.ipcCall({
-      operations: operations.count,
+      operation: operations.count,
       model: model,
       query: query,
     })
+  }
+
+  public edit(model, query, newObj): Promise<any> {
+    return this.ipcCall({
+      model: model,
+      operation: operations.update,
+      query: query,
+      newObj: newObj
+    })
+  }
+
+  public remove(model, query): Promise<any> {
+    return this.ipcCall({
+      model: model,
+      operation: operations.remove,
+      query: query
+    });
   }
 
   private ipcCall(opt: any): Promise<any> {

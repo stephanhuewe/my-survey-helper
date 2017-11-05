@@ -1,0 +1,80 @@
+<ng-template let-context let-modal="modal" #modalTemplate>
+  <div class="header">Add New Coat Order</div>
+  <div class="content">
+
+    <form class="ui form" [formGroup]="coatOrderForm" novalidate #coat_form>
+      <div class="field">
+        <!--[ngClass]="{error: coatOrderForm.get('orderNumber').invalid && coatOrderForm.get('name').touched}">-->
+        <label>Order Number</label>
+        <div class="ui grid">
+          <div class="three wide column">
+            <div class="ui buttons">
+              <button class="ui button" [ngClass]="{green: coatOrderForm.get('orderNumberPrefix').value === 'p'}"
+                  (click)="coatOrderForm.get('orderNumberPrefix').setValue('p')">P</button>
+              <!--<div class=""></div>-->
+              <button class="ui button" [ngClass]="{green: coatOrderForm.get('orderNumberPrefix').value === 'l'}"
+                      (click)="coatOrderForm.get('orderNumberPrefix').setValue('l')">L</button>
+            </div>
+          </div>
+          <div class="four wide column field" [ngClass]="{error : coatOrderForm.get('orderNumber').invalid && coatOrderForm.get('orderNumber').touched}">
+            <input type="text" name="orderNumber" placeholder="Order Number" formControlName="orderNumber">
+            <div class="ui pointing red basic label" *ngIf="coatOrderForm.get('orderNumber').invalid && coatOrderForm.get('orderNumber').touched">
+              Order number is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Survey Type</label>
+        <div class="ui buttons">
+          <button class="ui button" [ngClass]="{green: coatOrderForm.get('surveyType').value === 1}"
+                  (click)="coatOrderForm.get('surveyType').setValue(1)">First</button>
+          <button class="ui button" [ngClass]="{green: coatOrderForm.get('surveyType').value === 2}"
+                  (click)="coatOrderForm.get('surveyType').setValue(2)">Final</button>
+        </div>
+      </div>
+      <div class="fields">
+        <div class="field">
+          <label>Received Date</label>
+          <input type="text" name="receivedDate" placeholder="Date of Received" suiDatepicker pickerMode="date"
+                 formControlName="receivedDate">
+        </div>
+        <div class="field">
+          <label>Survey Date</label>
+          <input type="text" name="surveyDate" placeholder="Date of Survey" suiDatepicker pickerMode="date"
+                 formControlName="surveyDate">
+        </div>
+        <div class="field">
+          <label>Forward Date</label>
+          <input type="text" name="forwardDate" placeholder="Date of Forward" suiDatepicker pickerMode="date"
+                 formControlName="forwardDate">
+        </div>
+        <div class="field">
+          <label>Notice Date</label>
+          <input type="text" name="noticeDate" placeholder="Date of Notice" suiDatepicker pickerMode="date"
+                 formControlName="noticeDate">
+        </div>
+      </div>
+      <div class="field">
+        <label>Coat</label>
+        <div class="ui buttons">
+          <button class="ui button" [ngClass]="{green: coatOrderForm.get('coat').value === 'kal'}"
+                  (click)="coatOrderForm.get('coat').setValue('kal')">Kaluthara</button>
+          <button class="ui button" [ngClass]="{green: coatOrderForm.get('coat').value === 'hor'}"
+                  (click)="coatOrderForm.get('coat').setValue('hor')">Horana</button>
+          <button class="ui button" [ngClass]="{green: coatOrderForm.get('coat').value === 'pan'}"
+                  (click)="coatOrderForm.get('coat').setValue('pan')">Panadura</button>
+          <button class="ui button"  [ngClass]="{green: coatOrderForm.get('coat').value === 'mora'}"
+                  (click)="coatOrderForm.get('coat').setValue('mora')">Moaratuwa</button>
+          <button class="ui button" [ngClass]="{green: coatOrderForm.get('coat').value === 'motl'}"
+                  (click)="coatOrderForm.get('coat').setValue('motl')">Mount Lavinia</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.deny('denied')">Cancel</button>
+    <button class="ui green button" (click)="saveCoatOrder() ? modal.approve('ok'): showError() " autofocus>SAVE</button>
+  </div>
+</ng-template>

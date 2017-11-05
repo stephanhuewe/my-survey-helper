@@ -15,3 +15,25 @@
 .dimmer-button {
   margin-top: 15px;
 }
+
+.icon-panel {
+  padding: 5px;
+  width: 80px;
+  height: 100vh;
+  background-color: rgba(0,0,0, 0.8);
+
+  button {
+    margin-bottom: 5px;
+  }
+}
+.grid-container {
+  display: flex;
+}
+
+.grid-body {
+  background-color: #b2ffbb;
+  box-shadow: 9px 10px 36px 1px rgba(0,0,0,0.67);
+  width: 90vw;
+  margin: auto auto;
+  height: 95vh;
+}

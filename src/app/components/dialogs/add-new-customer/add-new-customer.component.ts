@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { ModalTemplate, SuiModalService, TemplateModalConfig, ModalSize } from 'ng2-semantic-ui'
 import { DataService } from '../../../providers/data.service';
 import { Customer } from '../../../providers/models/Customer';
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { IContext } from '../IContext';
+import { NGValidators } from 'ng-validators';
 
 @Component({
   selector: 'app-add-new-customer',
@@ -14,20 +15,33 @@ export class AddNewCustomerComponent {
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<IContext, string, string>;
 
-  public telMask = ['(', /[0]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/];
+  @Output() private updateSuccess: EventEmitter<any> = new EventEmitter();
+
+  public telMask = ['(', /[0]/, /[1-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/];
 
   public customerForm: FormGroup;
 
+  private mode = 'add';
+  private editingObj = null;
+
   constructor(public modalService: SuiModalService, private dataService: DataService, private fb: FormBuilder) {
     this.customerForm = this.fb.group({
-      name: ['', Validators.required],
-      tel: [''],
+      name: ['', [Validators.required]],
+      tel: ['', [this.telephoneNumber]],
       address: [''],
-      id: ['']
+      id: ['', this.isIDNumber]
     });
   }
 
-  public open() {
+  public open(obj?: any) {
+    if (obj) {
+      this.mode = 'edit';
+      this.editingObj = obj;
+      this.customerForm.get('name').setValue(obj['name']);
+      this.customerForm.get('tel').setValue(obj['telephone']);
+      this.customerForm.get('id').setValue(obj['idNumber']);
+      this.customerForm.get('address').setValue(obj['address']);
+    }
     const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
 
     config.closeResult = 'closed!';
@@ -37,8 +51,13 @@ export class AddNewCustomerComponent {
     this.modalService
       .open(config)
       .onApprove(result => {
-        // this.saveCustomer();
-        console.log(result);
+        if (this.mode === 'add') {
+          // show success result
+          this.updateSuccess.emit();
+        } else {
+          // fire an event to the list
+          this.updateSuccess.emit(this.editingObj['_id']);
+        }
       })
       .onDeny(result => {
         console.log('cancled');
@@ -54,18 +73,43 @@ export class AddNewCustomerComponent {
         name: this.customerForm.get('name').value,
         telephone: this.customerForm.get('tel').value,
       };
-
-      return this.dataService.insert('customers', customer).then(x => {
-        console.log(x);
-        this.customerForm.reset();
-        return true;
-      })
+      if (this.mode === 'add') {
+        return this.dataService.insert('customers', customer).then(x => {
+          this.customerForm.reset();
+          this.customerForm.markAsUntouched();
+          return true;
+        })
+      } else {
+        return this.dataService.edit('customers', { _id: this.editingObj['_id'] }, customer).then(x => {
+          this.customerForm.reset();
+          this.customerForm.markAsUntouched();
+          return true;
+        })
+      }
     } else {
       return false;
     }
   }
 
   public showError() {
-    console.log('err');
+    console.log(this.customerForm);
+  }
+
+  private telephoneNumber(con: AbstractControl): ValidationErrors | null {
+    try {
+      if (con && con.value && con.value.indexOf('_') !== -1) {
+        return { Incomplete: true };
+      }
+    } catch (e) {
+    }
+  }
+
+  private isIDNumber(con: AbstractControl): ValidationErrors | null {
+    try {
+      if (con && con.value !== '' && !con.value.match(/^(\d\d)*(\d){9}(v)*$/)) {
+        return { notId: true };
+      }
+    } catch (e) {
+    }
   }
 }
