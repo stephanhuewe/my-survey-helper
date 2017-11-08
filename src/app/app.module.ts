@@ -21,6 +21,7 @@ import { NumberOnlyFieldDirective } from './providers/number-only-field.directiv
 import { AddNewCoatOrderComponent } from './components/dialogs/add-new-coat-order/add-new-coat-order.component';
 import { CustomerListComponent } from './components/grids/customer-list/customer-list.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { PlanListComponent } from './components/grids/plan-list/plan-list.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     NumberOnlyFieldDirective,
     AddNewCoatOrderComponent,
     CustomerListComponent,
+    PlanListComponent,
   ],
   imports: [
     BrowserModule,

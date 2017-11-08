@@ -108,6 +108,7 @@
     </div>
     <div class="grid-body">
       <app-customer-list *ngIf="tempData['grid'] === 'customer'" (editCustomer)="addCustomer($event)" #customerList></app-customer-list>
+      <app-plan-list *ngIf="tempData['grid'] === 'plan'" #planList></app-plan-list>
     </div>
   </div>
 </div>

@@ -1,0 +1,93 @@
+<div class="ui grid">
+  <div class="ui row" style="margin: 20px 0 0 10px">
+    <div class="five wide column">
+      <h1 class="ui centered aligned header">Plans List</h1>
+    </div>
+    <div class="right floated seven wide column">
+      <button class="ui green icon button" suiPopup popupText="Add New Customer" (click)="editPlan.emit();" >
+        <i class="add icon"></i>
+      </button>
+      <div class="ui action input">
+        <input type="text" placeholder="Search..." (keyup)='updateFilter(searchBox)' #searchBox>
+        <sui-select class="selection"
+                    [(ngModel)]="searchSelected"
+                    labelField="name"
+                    valueField="val"
+                    (ngModelChange)="searchBox.value = ''; updateFilter(searchBox)"
+                    #select>
+          <sui-select-option *ngFor="let option of columnsToSearch"
+                             [value]="option">
+          </sui-select-option>
+        </sui-select>
+        <div *ngIf="rows.length === temp.length" class="ui blue icon button" (click)="updateFilter(searchBox)"><i class="ui search icon"></i></div>
+        <div *ngIf="rows.length !== temp.length" class="ui red icon button" (click)="searchBox.value = ''; updateFilter(searchBox)"><i class="ui remove icon"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="ui row">
+    <div class="ui column sixteen">
+      <div class="table-container">
+        <ngx-datatable class="material" style="height: 70vh"
+                       [rows]="rows"
+                       [columnMode]="'force'"
+                       [headerHeight]="50"
+                       [footerHeight]="50"
+                       [rowHeight]="50"
+                       [limit]="8"
+                       [reorderable]="reorderable"
+        >
+          <ngx-datatable-column>
+            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+              <span (click)="sort()" style="cursor: hand">Plan No</span>
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>{{value}}</ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column prop="dateOfPlan">
+            <ng-template ngx-datatable-header-template>
+              <span>Plan Date</span>
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>{{getDisplayDate(value) | date:'yyyy-MM-dd'}}</ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column prop="dateOfSurvey">
+            <ng-template ngx-datatable-header-template>
+              <span>Survey Date</span>
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>{{getDisplayDate(value) | date:'yyyy-MM-dd'}}</ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column prop="extent">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <div style="text-align: left;
+  padding: .9rem 1.2rem;
+  font-weight: 500; background-color: red">
+                sdfasdfkasl
+              </div>
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <div>
+                A: {{value.A}} |
+                R: {{value.R}} |
+                P: {{value.P}} |
+                Ha: {{value.Ha}}
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+        </ngx-datatable>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template let-context let-modal="modal" #removeConfirm>
+  <div class="header">Are you sure ?</div>
+  <div class="content">
+    <p [innerHTML]="context.data"></p>
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.approve('approved')">DELETE</button>
+    <button class="ui green button" (click)="modal.deny('denied')" autofocus>Cancel</button>
+  </div>
+</ng-template>

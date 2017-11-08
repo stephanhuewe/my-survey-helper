@@ -59,8 +59,8 @@ export let dbCalls = (arg, next) => {
     case operations.count:
       return d.count(arg['query'], next);
     case operations.update:
-      break;
+      return d.update(arg['query'], arg['newObj'], next);
     case operations.remove:
-      break;
+      return d.remove(arg['query'], {}, next);
   }
 };
