@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ModalSize, ModalTemplate, SuiModalService, TemplateModalConfig } from 'ng2-semantic-ui';
 import { IContext } from '../IContext';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { DataService } from '../../../providers/data.service';
 import { Plan } from '../../../providers/models/Plan';
+import { DISTRICT_MAP } from '../../../const/districts';
 
 @Component({
   selector: 'app-add-new-plan',
@@ -14,36 +15,15 @@ export class AddNewPlanComponent {
 
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<IContext, string, string>;
+  @Output() private updateSuccess: EventEmitter<any> = new EventEmitter();
 
   public planForm: FormGroup;
 
-  public districtList = [
-    { val: 'amp', name: 'Ampara' },
-    { val: 'anu', name: 'Anuradhapura' },
-    { val: 'bad', name: 'Badulla' },
-    { val: 'bat', name: 'Batticaloa' },
-    { val: 'col', name: 'Colombo' },
-    { val: 'gal', name: 'Galle' },
-    { val: 'gam', name: 'Gampaha' },
-    { val: 'ham', name: 'Hambantota' },
-    { val: 'jaf', name: 'Jaffna' },
-    { val: 'kal', name: 'Kalutara' },
-    { val: 'kan', name: 'Kandy' },
-    { val: 'keg', name: 'Kegalle' },
-    { val: 'kil', name: 'Kilinochchi' },
-    { val: 'krg', name: 'Kurunegala' },
-    { val: 'man', name: 'Mannar' },
-    { val: 'mtl', name: 'Matale' },
-    { val: 'mtr', name: 'Matara' },
-    { val: 'mon', name: 'Moneragala' },
-    { val: 'mul', name: 'Mullaitivu' },
-    { val: 'nwe', name: 'Nuwara Eliya' },
-    { val: 'pol', name: 'Polonnaruwa' },
-    { val: 'put', name: 'Puttalam' },
-    { val: 'rat', name: 'Ratnapura' },
-    { val: 'tri', name: 'Trincomalee' },
-    { val: 'vav', name: 'Vavuniya' },
-  ];
+  private mode = 'add';
+  private editingObj = null;
+
+  public districtMap = DISTRICT_MAP;
+  public districtList = [];
 
   constructor(public modalService: SuiModalService, private dataService: DataService, private fb: FormBuilder) {
     this.planForm = this.fb.group({
@@ -58,9 +38,24 @@ export class AddNewPlanComponent {
       village: [''],
       district: ['']
     });
+    this.setDistrictList();
   }
 
-  public open() {
+  public open(obj ?: any) {
+    if (obj) {
+      this.mode = 'edit';
+      this.editingObj = obj;
+      this.planForm.get('planNumber').setValue(obj['planNo']);
+      this.planForm.get('doPlan').setValue(obj['dateOfPlan']);
+      this.planForm.get('doSurvey').setValue(obj['dateOfSurvey']);
+      this.planForm.get('extentA').setValue(obj['extent'].A);
+      this.planForm.get('extentR').setValue(obj['extent'].R);
+      this.planForm.get('extentP').setValue(obj['extent'].P);
+      this.planForm.get('extentHa').setValue(obj['extent'].Ha);
+      this.planForm.get('landName').setValue(obj['location'].landName);
+      this.planForm.get('village').setValue(obj['location'].village);
+      this.planForm.get('district').setValue(obj['location'].district);
+    }
     const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
 
     config.closeResult = 'closed!';
@@ -70,6 +65,13 @@ export class AddNewPlanComponent {
     this.modalService
       .open(config)
       .onApprove(result => {
+        if (this.mode === 'add') {
+          // show success result
+          this.updateSuccess.emit();
+        } else {
+          // fire an event to the list
+          this.updateSuccess.emit(this.editingObj['_id']);
+        }
 
       })
       .onDeny(result => {
@@ -96,11 +98,19 @@ export class AddNewPlanComponent {
           village: this.planForm.get('village').value,
         },
       };
-      return this.dataService.insert('plans', plan).then(x => {
-        console.log(x);
-        this.planForm.reset();
-        return true;
-      })
+      if (this.mode === 'add') {
+        return this.dataService.insert('plans', plan).then(x => {
+          this.planForm.reset();
+          this.planForm.markAsUntouched();
+          return true;
+        })
+      } else {
+        return this.dataService.edit('plans', { _id: this.editingObj['_id'] }, plan).then(x => {
+          this.planForm.reset();
+          this.planForm.markAsUntouched();
+          return true;
+        })
+      }
     } else {
       return false;
     }
@@ -114,6 +124,14 @@ export class AddNewPlanComponent {
     if (parseFloat(con.value) < 0) {
       return { negative: true };
     }
+  }
+
+  public setDistrictList() {
+    const array = [];
+    Object.keys(this.districtMap).forEach(val => {
+      array.push({ val: val, name: this.districtMap[val] })
+    });
+    this.districtList = array;
   }
 
 }

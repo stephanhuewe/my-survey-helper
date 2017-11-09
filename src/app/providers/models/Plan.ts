@@ -4,7 +4,7 @@
 
 export interface Plan {
   planNo: number,
-  dateOfPlan: Date,
+  dateOfPlan: any,
   dateOfSurvey: Date,
   extent: {
     A: number,

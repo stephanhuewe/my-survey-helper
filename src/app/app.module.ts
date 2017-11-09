@@ -22,6 +22,7 @@ import { AddNewCoatOrderComponent } from './components/dialogs/add-new-coat-orde
 import { CustomerListComponent } from './components/grids/customer-list/customer-list.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { PlanListComponent } from './components/grids/plan-list/plan-list.component';
+import { CoatOrderListComponent } from './components/grids/coat-order-list/coat-order-list.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { PlanListComponent } from './components/grids/plan-list/plan-list.compon
     AddNewCoatOrderComponent,
     CustomerListComponent,
     PlanListComponent,
+    CoatOrderListComponent,
   ],
   imports: [
     BrowserModule,

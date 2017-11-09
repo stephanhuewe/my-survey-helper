@@ -13,9 +13,3 @@ export interface CoatOrder {
   coat: string;
 }
 
-// Coats
-// Kaluthara - kal
-// Horana - hor
-// Panadura - pan
-// Moratuwa - mora
-// Mount Lavinia - motl

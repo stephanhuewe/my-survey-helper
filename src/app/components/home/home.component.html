@@ -79,7 +79,7 @@
           </sui-dimmer>
           <img src="../../../assets/images/mail.png">
         </div>
-        <div class="content" (click)="tempData['active-div'] = 'grid'; tempData['grid'] = 'coat_orders'">
+        <div class="content" (click)="tempData['active-div'] = 'grid'; tempData['grid'] = 'coat_order'">
           <a class="header">Coat Orders</a>
         </div>
         <div class="ui blue bottom attached button" (click)="addCoatOrder()">
@@ -108,11 +108,12 @@
     </div>
     <div class="grid-body">
       <app-customer-list *ngIf="tempData['grid'] === 'customer'" (editCustomer)="addCustomer($event)" #customerList></app-customer-list>
-      <app-plan-list *ngIf="tempData['grid'] === 'plan'" #planList></app-plan-list>
+      <app-plan-list *ngIf="tempData['grid'] === 'plan'" (editPlan)="addPlan($event)" #planList></app-plan-list>
+      <app-coat-order-list *ngIf="tempData['grid'] === 'coat_order'" (editCoatOrder)="addCoatOrder($event)" #coatOrderList></app-coat-order-list>
     </div>
   </div>
 </div>
 
 <app-add-new-customer #addNewCustomerForm (updateSuccess)="updateSuccess('customer', $event)"></app-add-new-customer>
-<app-add-new-plan #addNewPlanForm></app-add-new-plan>
-<app-add-new-coat-order #addNewCoatOrderForm></app-add-new-coat-order>
+<app-add-new-plan #addNewPlanForm (updateSuccess)="updateSuccess('plan', $event)"></app-add-new-plan>
+<app-add-new-coat-order #addNewCoatOrderForm (updateSuccess)="updateSuccess('coat', $event)"></app-add-new-coat-order>

@@ -58,16 +58,9 @@
       <div class="field">
         <label>Coat</label>
         <div class="ui buttons">
-          <button class="ui button" [ngClass]="{green: coatOrderForm.get('coat').value === 'kal'}"
-                  (click)="coatOrderForm.get('coat').setValue('kal')">Kaluthara</button>
-          <button class="ui button" [ngClass]="{green: coatOrderForm.get('coat').value === 'hor'}"
-                  (click)="coatOrderForm.get('coat').setValue('hor')">Horana</button>
-          <button class="ui button" [ngClass]="{green: coatOrderForm.get('coat').value === 'pan'}"
-                  (click)="coatOrderForm.get('coat').setValue('pan')">Panadura</button>
-          <button class="ui button"  [ngClass]="{green: coatOrderForm.get('coat').value === 'mora'}"
-                  (click)="coatOrderForm.get('coat').setValue('mora')">Moaratuwa</button>
-          <button class="ui button" [ngClass]="{green: coatOrderForm.get('coat').value === 'motl'}"
-                  (click)="coatOrderForm.get('coat').setValue('motl')">Mount Lavinia</button>
+          <button class="ui button" *ngFor="let c of getKeys(coats)"
+                  [ngClass]="{green: coatOrderForm.get('coat').value === c}"
+                  (click)="coatOrderForm.get('coat').setValue(c)">{{ coats[c] }}</button>
         </div>
       </div>
     </form>

@@ -64,9 +64,13 @@ export class CustomerListComponent implements OnInit {
         console.log(result);
         this.dataService.remove('customers', { _id: obj._id }).then(doc => {
           if (doc['doc'] === 1) {
-            const index = this.rows.indexOf(obj);
-            if (index !== -1) {
-              this.rows.splice(index, 1);
+            const index1 = this.rows.indexOf(obj);
+            const index2 = this.temp.indexOf(obj);
+            if (index1 !== -1) {
+              this.rows.splice(index1, 1);
+            }
+            if (index2 !== -1) {
+              this.temp.splice(index2, 1);
             }
           }
         })

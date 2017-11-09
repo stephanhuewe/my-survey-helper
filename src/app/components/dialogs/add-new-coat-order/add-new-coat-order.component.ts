@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ModalSize, ModalTemplate, SuiModalService, TemplateModalConfig } from 'ng2-semantic-ui';
 import { IContext } from '../IContext';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../../../providers/data.service';
 import { Customer } from '../../../providers/models/Customer';
 import { CoatOrder } from '../../../providers/models/CoatOrder';
+import { COATS } from '../../../const/coats';
 
 @Component({
   selector: 'app-add-new-coat-order',
@@ -15,10 +16,15 @@ export class AddNewCoatOrderComponent {
 
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<IContext, string, string>;
+  @Output() private updateSuccess: EventEmitter<any> = new EventEmitter();
+  private mode = 'add';
+  private editingObj = null;
 
   public telMask = ['(', /[0]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/];
 
   public coatOrderForm: FormGroup;
+
+  public coats = COATS;
 
   constructor(public modalService: SuiModalService, private dataService: DataService, private fb: FormBuilder) {
     this.coatOrderForm = this.fb.group({
@@ -33,7 +39,19 @@ export class AddNewCoatOrderComponent {
     });
   }
 
-  public open() {
+  public open(obj ?: any) {
+    if (obj) {
+      this.mode = 'edit';
+      this.editingObj = obj;
+      this.coatOrderForm.get('coat').setValue(obj['coat']);
+      this.coatOrderForm.get('orderNumber').setValue(obj['orderNumber']);
+      this.coatOrderForm.get('orderNumberPrefix').setValue(obj['orderNumberPrefix']);
+      this.coatOrderForm.get('receivedDate').setValue(obj['receivedDate']);
+      this.coatOrderForm.get('surveyDate').setValue(obj['surveyDate']);
+      this.coatOrderForm.get('forwardDate').setValue(obj['forwardDate']);
+      this.coatOrderForm.get('noticedDate').setValue(obj['noticedDate']);
+      this.coatOrderForm.get('surveyType').setValue(obj['surveyType']);
+    }
     const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
     config.closeResult = 'closed!';
     config.size = ModalSize.Small;
@@ -42,8 +60,13 @@ export class AddNewCoatOrderComponent {
     this.modalService
       .open(config)
       .onApprove(result => {
-        // this.saveCustomer();
-        console.log(result);
+        if (this.mode === 'add') {
+          // show success result
+          this.updateSuccess.emit();
+        } else {
+          // fire an event to the list
+          this.updateSuccess.emit(this.editingObj['_id']);
+        }
       })
       .onDeny(result => {
         console.log('cancled');
@@ -64,11 +87,19 @@ export class AddNewCoatOrderComponent {
         noticeDate: this.coatOrderForm.get('noticeDate').value,
       };
 
-      return this.dataService.insert('coat_orders', coatOrder).then(x => {
-        console.log(x);
-        this.coatOrderForm.reset();
-        return true;
-      })
+      if (this.mode === 'add') {
+        return this.dataService.insert('coat_orders', coatOrder).then(x => {
+          this.coatOrderForm.reset();
+          this.coatOrderForm.markAsUntouched();
+          return true;
+        })
+      } else {
+        return this.dataService.edit('coat_orders', {_id : this.editingObj['_id']}, coatOrder).then(x => {
+          this.coatOrderForm.reset();
+          this.coatOrderForm.markAsUntouched();
+          return true;
+        })
+      }
     } else {
       return false;
     }
@@ -78,4 +109,7 @@ export class AddNewCoatOrderComponent {
     console.log('err');
   }
 
+  public getKeys(obj) {
+    return Object.keys(obj);
+  }
 }

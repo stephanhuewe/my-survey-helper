@@ -1,10 +1,10 @@
 <div class="ui grid">
   <div class="ui row" style="margin: 20px 0 0 10px">
     <div class="five wide column">
-      <h1 class="ui centered aligned header">Plans List</h1>
+      <h1 class="ui centered aligned header">Coat Order List</h1>
     </div>
     <div class="right floated seven wide column">
-      <button class="ui green icon button" suiPopup popupText="Add New Customer" (click)="editPlan.emit();">
+      <button class="ui green icon button" suiPopup popupText="Add New Customer" (click)="editCoatOrder.emit();">
         <i class="add icon"></i>
       </button>
       <div class="ui action input">
@@ -38,76 +38,59 @@
                        [limit]="8"
                        [messages]="{emptyMessage: 'No record found', totalMessage:'plans'}"
         >
-          <ngx-datatable-column prop="planNo" [width]="70">
-            <ng-template let-sort="sortFn" ngx-datatable-header-template >
-              <span (click)="sort()" style="cursor: hand">Plan No</span>
-            </ng-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>{{value}}</ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column prop="dateOfPlan">
+          <ngx-datatable-column [width]="70">
             <ng-template let-sort="sortFn" ngx-datatable-header-template>
-              <span (click)="sort()">Plan Date</span>
+              <span (click)="sort()" style="cursor: hand">Coat Order No</span>
             </ng-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>{{getDisplayDate(value) | date:'yyyy-MM-dd'}}
+            <ng-template let-row="row" ngx-datatable-cell-template>{{row.orderNumberPrefix|uppercase}} {{row.orderNumber}}
             </ng-template>
           </ngx-datatable-column>
 
-          <ngx-datatable-column prop="dateOfSurvey">
+          <ngx-datatable-column prop="receivedDate">
+            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+              <span (click)="sort()">Received Date</span>
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>{{ getDisplayDate(value) |date:'yyyy-MM-dd'}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column prop="noticeDate">
+            <ng-template ngx-datatable-header-template>
+              <span>Noticed Date</span>
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>{{ getDisplayDate(value) |date:'yyyy-MM-dd'}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column prop="surveyDate">
             <ng-template ngx-datatable-header-template>
               <span>Survey Date</span>
             </ng-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>{{getDisplayDate(value) | date:'yyyy-MM-dd'}}
+            <ng-template let-value="value" ngx-datatable-cell-template>{{getDisplayDate(value)|date:'yyyy-MM-dd'}}
             </ng-template>
           </ngx-datatable-column>
 
-          <ngx-datatable-column prop="extent">
-            <ng-template let-column="column" ngx-datatable-header-template>
-              <table style="width: 100%; table-layout: fixed">
-                <thead>
-                <tr>
-                  <th colspan="4">Extent</th>
-                </tr>
-                <tr style="padding: 0 1.2rem;">
-                  <th style="font-weight: lighter">A</th>
-                  <th style="font-weight: lighter">R</th>
-                  <th style="font-weight: lighter">P</th>
-                  <th style="font-weight: lighter">Ha.</th>
-                </tr>
-                </thead>
-              </table>
-            </ng-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>
-              <div style="text-align: center">
-                <div style="float: left; width: 25%">{{ value.A }}</div>
-                <div style="float: left; width: 25%">{{ value.R }}</div>
-                <div style="float: left; width: 25%">{{ value.P }}</div>
-                <div style="float: left; width: 25%">{{ value.Ha }}</div>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column prop="location">
+          <ngx-datatable-column prop="forwardDate">
             <ng-template ngx-datatable-header-template>
-              <span>Land Name</span>
+              <span>Forward Date</span>
             </ng-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>{{ value.landName }}
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column prop="location">
-            <ng-template ngx-datatable-header-template>
-              <span>Village</span>
-            </ng-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>{{ value.village }}
+            <ng-template let-value="value" ngx-datatable-cell-template>{{getDisplayDate(value) |date:'yyyy-MM-dd'}}
             </ng-template>
           </ngx-datatable-column>
 
-          <ngx-datatable-column prop="location">
+          <ngx-datatable-column prop="surveyType">
             <ng-template ngx-datatable-header-template>
-              <span>District</span>
+              <span>Survey Type</span>
             </ng-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>{{ districtMap[value.district] }}
+            <ng-template let-value="value" ngx-datatable-cell-template>{{ value === 1 ? 'First' : 'Final' }}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column prop="coat">
+            <ng-template ngx-datatable-header-template>
+              <span>Coat</span>
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>{{ coats[value] }}
             </ng-template>
           </ngx-datatable-column>
 
@@ -115,12 +98,13 @@
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div class="ui icon buttons">
                 <button class="ui blue basic button" suiPopup popupText="Edit"
-                        (click)="editPlan.emit(row); editingSelect = row;"><i class="checkmark icon"></i></button>
+                        (click)="editCoatOrder.emit(row); editingSelect = row;"><i class="checkmark icon"></i></button>
                 <button class="ui red basic button" suiPopup popupText="Delete" (click)="removeRow(row)"><i
                   class="remove icon"></i></button>
               </div>
             </ng-template>
           </ngx-datatable-column>
+
         </ngx-datatable>
       </div>
     </div>
