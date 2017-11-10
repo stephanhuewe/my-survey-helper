@@ -17,4 +17,5 @@ export interface Plan {
     village: string,
     district: string
   }
+  customer?: string,
 }

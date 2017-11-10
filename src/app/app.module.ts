@@ -23,6 +23,7 @@ import { CustomerListComponent } from './components/grids/customer-list/customer
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { PlanListComponent } from './components/grids/plan-list/plan-list.component';
 import { CoatOrderListComponent } from './components/grids/coat-order-list/coat-order-list.component';
+import { SelectCustomerComponent } from './components/dialogs/select-dialogs/select-customer/select-customer.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { CoatOrderListComponent } from './components/grids/coat-order-list/coat-
     CustomerListComponent,
     PlanListComponent,
     CoatOrderListComponent,
+    SelectCustomerComponent,
   ],
   imports: [
     BrowserModule,

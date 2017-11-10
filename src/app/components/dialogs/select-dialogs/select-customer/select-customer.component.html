@@ -1,0 +1,36 @@
+<ng-template let-context let-modal="modal" #modalTemplate>
+  <div class="header">Select Customer</div>
+  <div class="content">
+    <div class="ui grid">
+      <div class="ui seven wide column">
+        <div class="ui four wide input">
+          <div class="ui search" [ngClass]="{loading: inputLoading}">
+            <div class="ui icon input">
+              <input class="prompt" type="text" placeholder="Search..." (keypress)="updateFilter(search)" #search>
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
+        </div>
+
+        <div class="ui middle aligned selection list" style="height: 150px; overflow-y: auto">
+          <div class="item" *ngFor="let x of customerList" (click)="select(x)">{{x.name}}</div>
+        </div>
+      </div>
+      <div class="nine wide column">
+        <table class="ui basic table">
+          <tbody>
+          <tr><td><strong>Name:</strong></td><td>{{ selectedCustomer['name'] }}</td></tr>
+          <tr><td><strong>Address:</strong></td><td>{{ selectedCustomer['address'] }}</td></tr>
+          <tr><td><strong>Telephone:</strong></td><td>{{ selectedCustomer['telephone'] }}</td></tr>
+          <tr><td><strong>ID No:</strong></td><td>{{ selectedCustomer['idNumber'] }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.deny('denied')">Cancle</button>
+    <button class="ui green button" (click)="modal.approve('ok')" autofocus>Select</button>
+  </div>
+</ng-template>

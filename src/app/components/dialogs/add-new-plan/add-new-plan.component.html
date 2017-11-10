@@ -3,17 +3,26 @@
   <div class="content">
 
     <form class="ui form" [formGroup]="planForm" novalidate #planFormId>
-      <div class="eight wide field"
-           [ngClass]="{error: planForm.get('planNumber').invalid && planForm.get('planNumber').touched}">
-        <label>Plan Number</label>
-        <input type="number" name="planNumber" placeholder="Plan Number" formControlName="planNumber">
-        <div class="ui pointing red basic label"
-             *ngIf="planForm.get('planNumber').invalid && planForm.get('planNumber').touched">
-          Plan Number {{
-          planForm.get('planNumber').hasError('required') ? 'can not empty' :
-          (planForm.get('planNumber').hasError('negative') ? 'should be positive' :
-          (planForm.get('planNumber').hasError('int') ? 'should be an integer': ''))
-          }}
+      <div class="equal width fields">
+        <div class="field"
+             [ngClass]="{error: planForm.get('planNumber').invalid && planForm.get('planNumber').touched}">
+          <label>Plan Number</label>
+          <input type="number" name="planNumber" placeholder="Plan Number" formControlName="planNumber">
+          <div class="ui pointing red basic label"
+               *ngIf="planForm.get('planNumber').invalid && planForm.get('planNumber').touched">
+            Plan Number {{
+            planForm.get('planNumber').hasError('required') ? 'can not empty' :
+            (planForm.get('planNumber').hasError('negative') ? 'should be positive' :
+            (planForm.get('planNumber').hasError('int') ? 'should be an integer': ''))
+            }}
+          </div>
+        </div>
+        <div class="field">
+          <label>Customer: </label>
+          <div class="ui icon input">
+            <input type="text" placeholder="Customer..." disabled formControlName="selectedCustomer">
+            <i class="inverted circular search link icon" (click)="selectCustomer.open()"></i>
+          </div>
         </div>
       </div>
       <div class="tow fields">
@@ -77,14 +86,15 @@
           </sui-select-option>
         </sui-select>
       </div>
-      <div class="field">
-        <label>Village</label>
-        <input type="text" name="village" placeholder="Village" formControlName="village">
-      </div>
-
-      <div class="field">
-        <label>Land Name</label>
-        <input type="text" name="landName" placeholder="Land Name" formControlName="landName">
+      <div class="equal width fields">
+        <div class="field">
+          <label>Village</label>
+          <input type="text" name="village" placeholder="Village" formControlName="village">
+        </div>
+        <div class="field">
+          <label>Land Name</label>
+          <input type="text" name="landName" placeholder="Land Name" formControlName="landName">
+        </div>
       </div>
 
     </form>
@@ -95,3 +105,5 @@
     <button class="ui green button" (click)="savePlan() ? modal.approve('ok'): showError() " autofocus>SAVE</button>
   </div>
 </ng-template>
+
+<app-select-customer #selectCustomer (selectCustomer)="customerSelection($event)"></app-select-customer>

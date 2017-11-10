@@ -29,7 +29,7 @@
   <div class="ui row">
     <div class="ui column sixteen">
       <div class="table-container">
-        <ngx-datatable class="material" style="height: 70vh"
+        <ngx-datatable class="material plan-list-grid" style="height: 70vh"
                        [rows]="rows"
                        [columnMode]="'force'"
                        [headerHeight]="50"
@@ -115,7 +115,7 @@
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div class="ui icon buttons">
                 <button class="ui blue basic button" suiPopup popupText="Edit"
-                        (click)="editPlan.emit(row); editingSelect = row;"><i class="checkmark icon"></i></button>
+                        (click)="editPlan.emit(row); editingSelect = row;"><i class="write icon"></i></button>
                 <button class="ui red basic button" suiPopup popupText="Delete" (click)="removeRow(row)"><i
                   class="remove icon"></i></button>
               </div>

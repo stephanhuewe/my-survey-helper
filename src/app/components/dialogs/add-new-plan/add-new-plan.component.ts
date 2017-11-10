@@ -25,6 +25,8 @@ export class AddNewPlanComponent {
   public districtMap = DISTRICT_MAP;
   public districtList = [];
 
+  public selectedCustomer = {};
+
   constructor(public modalService: SuiModalService, private dataService: DataService, private fb: FormBuilder) {
     this.planForm = this.fb.group({
       planNumber: ['', [Validators.required, this.validatorPositive]],
@@ -36,7 +38,8 @@ export class AddNewPlanComponent {
       extentHa: ['', this.validatorPositive],
       landName: [''],
       village: [''],
-      district: ['']
+      district: [''],
+      selectedCustomer: ''
     });
     this.setDistrictList();
   }
@@ -97,6 +100,7 @@ export class AddNewPlanComponent {
           landName: this.planForm.get('landName').value,
           village: this.planForm.get('village').value,
         },
+        customer: this.selectedCustomer['_id'],
       };
       if (this.mode === 'add') {
         return this.dataService.insert('plans', plan).then(x => {
@@ -132,6 +136,13 @@ export class AddNewPlanComponent {
       array.push({ val: val, name: this.districtMap[val] })
     });
     this.districtList = array;
+  }
+
+  public customerSelection(cus: any) {
+    if (cus) {
+      this.selectedCustomer = cus;
+      this.planForm.get('selectedCustomer').setValue(cus['name']);
+    }
   }
 
 }
