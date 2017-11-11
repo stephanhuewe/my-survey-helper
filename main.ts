@@ -1,6 +1,6 @@
-import { app, BrowserWindow, screen } from 'electron';
-import * as path from 'path';
-import { dbCalls } from './datastore/nedb_service';
+import {app, BrowserWindow, screen} from 'electron';
+import {dbCalls} from './datastore/nedb_service';
+import * as fs from 'fs';
 
 const ipc = require('electron').ipcMain;
 
@@ -73,6 +73,18 @@ try {
 
 ipc.on('db_calls', (event, arg) => {
   dbCalls(arg, function (err, data) {
-    event.sender.send('db_returns', { err: err, doc: data, unq: arg['unq'] });
+    event.sender.send('db_returns', {err: err, doc: data, unq: arg['unq']});
   });
+});
+
+
+// log.transports.file.level = 'warn';
+// log.transports.file.format = '{h}:{i}:{s}:{ms} {text}';
+// log.transports.file.maxSize = 5 * 1024 * 1024;
+// log.transports.file.file = '/log.txt';
+// log.transports.file.streamConfig = { flags: 'ax+' };
+// log.transports.file.stream = fs.createWriteStream('log.txt');
+
+ipc.on('log_calls', (event, arg) => {
+  fs.writeFile('log.txt', 'Hey there!');
 });

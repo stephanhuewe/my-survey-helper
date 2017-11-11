@@ -48,6 +48,7 @@
     "@swimlane/ngx-datatable": "10.4.0",
     "angular2-text-mask": "^8.0.4",
     "core-js": "2.4.1",
+    "electron-log": "^2.2.11",
     "enhanced-resolve": "3.3.0",
     "nedb": "^1.8.0",
     "ng-validators": "^0.2.1",

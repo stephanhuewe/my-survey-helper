@@ -27,6 +27,7 @@ import { SelectCustomerComponent } from './components/dialogs/select-dialogs/sel
 import { ViewCustomerComponent } from './components/dialogs/view-dialogs/view-customer/view-customer.component';
 import { ViewPlanComponent } from './components/dialogs/view-dialogs/view-plan/view-plan.component';
 import { SecreteDebugComponent } from './components/secrete-debug/secrete-debug.component';
+import {LoggerService} from "./providers/logger.service";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,7 @@ import { SecreteDebugComponent } from './components/secrete-debug/secrete-debug.
     TextMaskModule,
     NgxDatatableModule,
   ],
-  providers: [ElectronService, DataService],
+  providers: [ElectronService, DataService, LoggerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
