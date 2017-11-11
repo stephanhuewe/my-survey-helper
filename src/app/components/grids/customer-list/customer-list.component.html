@@ -34,34 +34,48 @@
                        [footerHeight]="50"
                        [rowHeight]="50"
                        [limit]="8"
+                       [messages]="{emptyMessage: 'No record found', totalMessage:'Customers'}"
         >
-          <ngx-datatable-column name="Name">
+          <ngx-datatable-column prop="name">
             <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-              <span (click)="sort()" style="cursor: hand">{{column.name}}</span>
+              <span (click)="sort()" style="cursor: hand">Name</span>
             </ng-template>
             <ng-template let-value="value" ngx-datatable-cell-template>{{value}}</ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Address">
+
+          <ngx-datatable-column prop="address">
             <ng-template let-column="column" ngx-datatable-header-template>
-              <span>{{column.name}}</span>
+              <span>Address</span>
             </ng-template>
             <ng-template let-value="value" ngx-datatable-cell-template>{{value || '-'}}</ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Telephone">
-            <ng-template let-column="column" ngx-datatable-header-template>
-              <span>{{column.name}}</span>
+
+          <ngx-datatable-column prop="telephone">
+            <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+              <span (click)="sort()">Telephone</span>
             </ng-template>
             <ng-template let-value="value" ngx-datatable-cell-template>{{value || '-'}}</ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="ID Number">
-            <ng-template let-column="column" ngx-datatable-header-template>
-              <span>{{column.name}}</span>
+
+          <ngx-datatable-column prop="idNumber">
+            <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+              <span (click)="sort()">ID</span>
             </ng-template>
             <ng-template let-value="value" ngx-datatable-cell-template>{{value || '-'}}</ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column>
+
+          <ngx-datatable-column prop="plans" [width]="40">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span></span>
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <i class="image icon" *ngFor="let p of value" suiPopup [popupHeader]="p.planNo" [popupText]="p.location.landName" popupPlacement="left" (click)="viewPlan.emit(p)"></i>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column [width]="40" [resizeable]="false">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <div class="ui icon buttons">
+              <div class="ui icon buttons" style="overflow-x:scroll;">
                 <button class="ui blue basic button" suiPopup popupText="Edit"
                         (click)="editCustomer.emit(row); editingSelect = row;"><i class="write icon"></i></button>
                 <button class="ui red basic button" suiPopup popupText="Delete" (click)="removeRow(row)"><i

@@ -73,6 +73,6 @@ try {
 
 ipc.on('db_calls', (event, arg) => {
   dbCalls(arg, function (err, data) {
-    event.sender.send('db_returns', { err: err, doc: data });
+    event.sender.send('db_returns', { err: err, doc: data, unq: arg['unq'] });
   });
 });

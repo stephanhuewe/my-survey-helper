@@ -3,7 +3,6 @@ import { ModalSize, ModalTemplate, SuiModalService, TemplateModalConfig } from '
 import { IContext } from '../IContext';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../../../providers/data.service';
-import { Customer } from '../../../providers/models/Customer';
 import { CoatOrder } from '../../../providers/models/CoatOrder';
 import { COATS } from '../../../const/coats';
 
@@ -49,7 +48,7 @@ export class AddNewCoatOrderComponent {
       this.coatOrderForm.get('receivedDate').setValue(obj['receivedDate']);
       this.coatOrderForm.get('surveyDate').setValue(obj['surveyDate']);
       this.coatOrderForm.get('forwardDate').setValue(obj['forwardDate']);
-      this.coatOrderForm.get('noticedDate').setValue(obj['noticedDate']);
+      this.coatOrderForm.get('noticeDate').setValue(obj['noticeDate']);
       this.coatOrderForm.get('surveyType').setValue(obj['surveyType']);
     }
     const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);

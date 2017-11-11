@@ -1,11 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { SuiModalService } from 'ng2-semantic-ui'
-import { AddNewCustomerComponent } from '../dialogs/add-new-customer/add-new-customer.component';
-import { AddNewPlanComponent } from '../dialogs/add-new-plan/add-new-plan.component';
-import { AddNewCoatOrderComponent } from '../dialogs/add-new-coat-order/add-new-coat-order.component';
-import { CustomerListComponent } from '../grids/customer-list/customer-list.component';
-import { PlanListComponent } from '../grids/plan-list/plan-list.component';
-import { CoatOrderListComponent } from '../grids/coat-order-list/coat-order-list.component';
+import {Component, ViewChild} from '@angular/core';
+import {SuiModalService} from 'ng2-semantic-ui';
+import {AddNewCustomerComponent} from '../dialogs/add-new-customer/add-new-customer.component';
+import {AddNewPlanComponent} from '../dialogs/add-new-plan/add-new-plan.component';
+import {AddNewCoatOrderComponent} from '../dialogs/add-new-coat-order/add-new-coat-order.component';
+import {CustomerListComponent} from '../grids/customer-list/customer-list.component';
+import {PlanListComponent} from '../grids/plan-list/plan-list.component';
+import {CoatOrderListComponent} from '../grids/coat-order-list/coat-order-list.component';
+import {SecreteDebugComponent} from '../secrete-debug/secrete-debug.component';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,8 @@ export class HomeComponent {
   @ViewChild('customerList') public customerListComp: CustomerListComponent;
   @ViewChild('planList') public planListComp: PlanListComponent;
   @ViewChild('coatOrderList') public coatOrderListComp: CoatOrderListComponent;
+
+  @ViewChild('debug') public debug: SecreteDebugComponent;
 
   constructor(private modalService: SuiModalService) {
 

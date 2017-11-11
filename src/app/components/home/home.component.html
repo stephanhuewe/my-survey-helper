@@ -107,8 +107,8 @@
       </button>
     </div>
     <div class="grid-body">
-      <app-customer-list *ngIf="tempData['grid'] === 'customer'" (editCustomer)="addCustomer($event)" #customerList></app-customer-list>
-      <app-plan-list *ngIf="tempData['grid'] === 'plan'" (editPlan)="addPlan($event)" #planList></app-plan-list>
+      <app-customer-list *ngIf="tempData['grid'] === 'customer'" (editCustomer)="addCustomer($event)" (viewPlan)="viewPlan.open($event)" #customerList></app-customer-list>
+      <app-plan-list *ngIf="tempData['grid'] === 'plan'" (editPlan)="addPlan($event)" (viewCustomer)="viewCustomer.open($event)" #planList></app-plan-list>
       <app-coat-order-list *ngIf="tempData['grid'] === 'coat_order'" (editCoatOrder)="addCoatOrder($event)" #coatOrderList></app-coat-order-list>
     </div>
   </div>
@@ -117,3 +117,8 @@
 <app-add-new-customer #addNewCustomerForm (updateSuccess)="updateSuccess('customer', $event)"></app-add-new-customer>
 <app-add-new-plan #addNewPlanForm (updateSuccess)="updateSuccess('plan', $event)"></app-add-new-plan>
 <app-add-new-coat-order #addNewCoatOrderForm (updateSuccess)="updateSuccess('coat', $event)"></app-add-new-coat-order>
+
+<app-view-customer #viewCustomer></app-view-customer>
+<app-view-plan #viewPlan></app-view-plan>
+
+<!--<app-secrete-debug></app-secrete-debug>-->

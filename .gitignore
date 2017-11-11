@@ -44,4 +44,4 @@ package-lock.json
 Thumbs.db
 
 #db
-/datastore/db
+#/datastore/db

@@ -16,6 +16,7 @@ export class CustomerListComponent implements OnInit {
   @ViewChild(DatatableComponent) table: DatatableComponent;
 
   @Output() public editCustomer: EventEmitter<any> = new EventEmitter();
+  @Output() public viewPlan: EventEmitter<any> = new EventEmitter();
 
   rows = [];
   temp = [];
@@ -32,9 +33,15 @@ export class CustomerListComponent implements OnInit {
 
   constructor(private dataService: DataService, private modalService: SuiModalService) {
     this.dataService.find('customers', {}).then(x => {
+      x.doc.forEach(c => {
+        this.dataService.find('plans', {customer : c._id}).then(p => {
+          c['plans'] = p.doc;
+        });
+      });
+      console.log(x.doc);
       this.rows = x.doc;
       this.temp = [...x.doc];
-    })
+    });
   }
 
   ngOnInit() {

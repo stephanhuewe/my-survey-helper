@@ -15,6 +15,7 @@ export class PlanListComponent implements OnInit {
   @ViewChild('removeConfirm') public removeConfirmTemp: ModalTemplate<IContext, string, string>;
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @Output() public editPlan: EventEmitter<any> = new EventEmitter();
+  @Output() public viewCustomer: EventEmitter<any> = new EventEmitter();
 
   public districtMap = DISTRICT_MAP;
 

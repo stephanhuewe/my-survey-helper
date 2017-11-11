@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import { ElectronService } from './electron.service';
-import { Subject } from 'rxjs/Subject';
+import {Injectable} from '@angular/core';
+import {ElectronService} from './electron.service';
+import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class DataService {
 
   private db_returns = new Subject();
+  private reqCounter = 0;
 
   constructor(private electron: ElectronService) {
     electron.getIPCRenderer().on('db_returns', (event, arg) => {
@@ -80,11 +81,15 @@ export class DataService {
   }
 
   private ipcCall(opt: any): Promise<any> {
+    const unq = this.reqCounter++;
+    opt['unq'] = unq;
     this.electron.getIPCRenderer().send('db_calls', opt);
     return new Promise((resolve, reject) => {
       const s = this.db_returns.subscribe(data => {
-        resolve(data);
-        s.unsubscribe();
+        if (data['unq'] === unq) {
+          resolve(data);
+          s.unsubscribe();
+        }
       })
     });
   }

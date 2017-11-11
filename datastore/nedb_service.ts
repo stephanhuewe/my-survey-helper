@@ -44,6 +44,7 @@ const operations = {
 };
 
 export let dbCalls = (arg, next) => {
+  console.log('NeDB', arg['model'], arg['operation'], arg['query'], arg['doc'], arg['_id'], arg['unq']);
   const d = database[arg['model']];
   switch (arg.operation) {
     case operations.insert:
@@ -53,7 +54,7 @@ export let dbCalls = (arg, next) => {
     case operations.find_sort:
       return d.find(arg['query']).sort(arg['sortBy']).exec(next);
     case operations.find_id:
-      return d.find({_id: arg['_id']}, next);
+      return d.findOne({_id: arg['_id']}, next);
     case operations.find_one:
       return d.findOne(arg['query'], next);
     case operations.count:

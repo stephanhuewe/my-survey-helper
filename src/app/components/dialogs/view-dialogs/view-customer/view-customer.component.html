@@ -1,0 +1,24 @@
+<ng-template let-context let-modal="modal" #modalTemplate>
+  <div class="header">{{ selectedCustomer['name'] }}</div>
+  <div class="content">
+    <table class="ui basic table">
+      <tbody>
+      <tr>
+        <td><strong>Address:</strong></td>
+        <td>{{ selectedCustomer['address'] }}</td>
+      </tr>
+      <tr>
+        <td><strong>Telephone:</strong></td>
+        <td>{{ selectedCustomer['telephone'] }}</td>
+      </tr>
+      <tr>
+        <td><strong>ID No:</strong></td>
+        <td>{{ selectedCustomer['idNumber'] }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="actions">
+      <button class="ui green button" (click)="modal.approve('ok')" autofocus>OK</button>
+    </div>
+  </div>
+</ng-template>

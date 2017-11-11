@@ -24,6 +24,9 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { PlanListComponent } from './components/grids/plan-list/plan-list.component';
 import { CoatOrderListComponent } from './components/grids/coat-order-list/coat-order-list.component';
 import { SelectCustomerComponent } from './components/dialogs/select-dialogs/select-customer/select-customer.component';
+import { ViewCustomerComponent } from './components/dialogs/view-dialogs/view-customer/view-customer.component';
+import { ViewPlanComponent } from './components/dialogs/view-dialogs/view-plan/view-plan.component';
+import { SecreteDebugComponent } from './components/secrete-debug/secrete-debug.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,9 @@ import { SelectCustomerComponent } from './components/dialogs/select-dialogs/sel
     PlanListComponent,
     CoatOrderListComponent,
     SelectCustomerComponent,
+    ViewCustomerComponent,
+    ViewPlanComponent,
+    SecreteDebugComponent,
   ],
   imports: [
     BrowserModule,
