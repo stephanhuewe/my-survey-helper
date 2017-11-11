@@ -9,14 +9,15 @@ import {LoggerService} from "./providers/logger.service";
 })
 export class AppComponent {
   constructor(public electronService: ElectronService, private logger: LoggerService) {
-    logger.log('started.....');
+    logger.log('AppComponent - constructor');
     if (electronService.isElectron()) {
-      console.log('Mode electron');
+      logger.log('Mode electron');
       // Check if electron is correctly injected (see externals in webpack.config.js)
-      console.log('c', electronService.ipcRenderer);
+      logger.log('c ' + JSON.stringify(electronService.ipcRenderer));
       // Check if nodeJs childProcess is correctly injected (see externals in webpack.config.js)
-      console.log('c', electronService.childProcess);
+      // console.log('c', electronService.childProcess);
     } else {
+      logger.log('web');
       console.log('Mode web');
     }
   }

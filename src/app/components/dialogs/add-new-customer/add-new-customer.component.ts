@@ -5,6 +5,7 @@ import { Customer } from '../../../providers/models/Customer';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { IContext } from '../IContext';
 import { NGValidators } from 'ng-validators';
+import {LoggerService} from "../../../providers/logger.service";
 
 @Component({
   selector: 'app-add-new-customer',
@@ -24,7 +25,8 @@ export class AddNewCustomerComponent {
   private mode = 'add';
   private editingObj = null;
 
-  constructor(public modalService: SuiModalService, private dataService: DataService, private fb: FormBuilder) {
+  constructor(public modalService: SuiModalService, private dataService: DataService, private fb: FormBuilder, private ls: LoggerService) {
+    this.ls.log('AddNewCustomerComponent - constructor');
     this.customerForm = this.fb.group({
       name: ['', [Validators.required]],
       tel: ['', [this.telephoneNumber]],
@@ -34,6 +36,7 @@ export class AddNewCustomerComponent {
   }
 
   public open(obj?: any) {
+    this.ls.log('AddNewCustomerComponent - open - ' + JSON.stringify(obj));
     if (obj) {
       this.mode = 'edit';
       this.editingObj = obj;
@@ -53,18 +56,21 @@ export class AddNewCustomerComponent {
       .onApprove(result => {
         if (this.mode === 'add') {
           // show success result
+          this.ls.log('AddNewCustomerComponent - approve modal in add mode');
           this.updateSuccess.emit();
         } else {
           // fire an event to the list
+          this.ls.log('AddNewCustomerComponent - approve modal in edit mode');
           this.updateSuccess.emit(this.editingObj['_id']);
         }
       })
       .onDeny(result => {
-        console.log('cancled');
+        this.ls.log('AddNewCustomerComponent - deny modal');
       });
   }
 
   private saveCustomer() {
+    this.ls.log('AddNewCustomerComponent - saveCustomer');
     this.customerForm.markAsDirty();
     if (this.customerForm.valid) {
       const customer: Customer = {
@@ -77,22 +83,25 @@ export class AddNewCustomerComponent {
         return this.dataService.insert('customers', customer).then(x => {
           this.customerForm.reset();
           this.customerForm.markAsUntouched();
+          this.ls.log('AddNewCustomerComponent - success add obj');
           return true;
         })
       } else {
         return this.dataService.edit('customers', { _id: this.editingObj['_id'] }, customer).then(x => {
           this.customerForm.reset();
           this.customerForm.markAsUntouched();
+          this.ls.log('AddNewCustomerComponent - success edit obj');
           return true;
         })
       }
     } else {
+      this.ls.log('AddNewCustomerComponent - saveCustomer - validation error');
       return false;
     }
   }
 
   public showError() {
-    console.log(this.customerForm);
+    this.ls.log('AddNewCustomerComponent - showError');
   }
 
   private telephoneNumber(con: AbstractControl): ValidationErrors | null {

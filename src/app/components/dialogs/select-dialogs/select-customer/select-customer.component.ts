@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ModalSize, ModalTemplate, SuiModalService, TemplateModalConfig } from 'ng2-semantic-ui';
 import { IContext } from '../../IContext';
-import { FormGroup } from '@angular/forms';
 import { DataService } from '../../../../providers/data.service';
+import {LoggerService} from "../../../../providers/logger.service";
 
 @Component({
   selector: 'app-select-customer',
@@ -21,7 +21,8 @@ export class SelectCustomerComponent {
   customerList = [];
   temp = [];
 
-  constructor(public modalService: SuiModalService, private dataService: DataService) {
+  constructor(public modalService: SuiModalService, private dataService: DataService, private ls: LoggerService) {
+    this.ls.log('SelectCustomerComponent - constructor');
     this.dataService.find('customers', {}).then(x => {
       this.customerList = x.doc;
       this.temp = [...x.doc];
@@ -29,14 +30,17 @@ export class SelectCustomerComponent {
   }
 
   public open() {
+    this.ls.log('SelectCustomerComponent - open');
     const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
     config.size = ModalSize.Tiny;
     this.modalService
       .open(config)
       .onApprove(result => {
+        this.ls.log('SelectCustomerComponent - select ' + this.selectedCustomer['_id']);
         this.selectCustomer.emit(this.selectedCustomer);
       })
       .onDeny(result => {
+        this.ls.log('SelectCustomerComponent - deny ');
         this.selectCustomer.emit(null);
       });
   }

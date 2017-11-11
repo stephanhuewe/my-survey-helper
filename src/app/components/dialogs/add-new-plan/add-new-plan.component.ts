@@ -5,6 +5,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 import { DataService } from '../../../providers/data.service';
 import { Plan } from '../../../providers/models/Plan';
 import { DISTRICT_MAP } from '../../../const/districts';
+import {LoggerService} from "../../../providers/logger.service";
 
 @Component({
   selector: 'app-add-new-plan',
@@ -27,7 +28,8 @@ export class AddNewPlanComponent {
 
   public selectedCustomer = {};
 
-  constructor(public modalService: SuiModalService, private dataService: DataService, private fb: FormBuilder) {
+  constructor(public modalService: SuiModalService, private dataService: DataService, private fb: FormBuilder, private ls: LoggerService) {
+    this.ls.log('AddNewPlanComponent - constructor');
     this.planForm = this.fb.group({
       planNumber: ['', [Validators.required, this.validatorPositive]],
       doPlan: [''],
@@ -45,6 +47,7 @@ export class AddNewPlanComponent {
   }
 
   public open(obj ?: any) {
+    this.ls.log('AddNewPlanComponent - open - ' + JSON.stringify(obj));
     if (obj) {
       this.mode = 'edit';
       this.editingObj = obj;
@@ -70,19 +73,21 @@ export class AddNewPlanComponent {
       .onApprove(result => {
         if (this.mode === 'add') {
           // show success result
+          this.ls.log('AddNewPlanComponent - approve modal in add');
           this.updateSuccess.emit();
         } else {
           // fire an event to the list
+          this.ls.log('AddNewPlanComponent - approve modal in edit');
           this.updateSuccess.emit(this.editingObj['_id']);
         }
-
       })
       .onDeny(result => {
-        console.log('cancled');
+        this.ls.log('AddNewPlanComponent - deny modal');
       });
   }
 
   private savePlan() {
+    this.ls.log('AddNewPlanComponent - savePlan');
     this.planForm.markAsDirty();
     if (this.planForm.valid) {
       const plan: Plan = {
@@ -106,22 +111,25 @@ export class AddNewPlanComponent {
         return this.dataService.insert('plans', plan).then(x => {
           this.planForm.reset();
           this.planForm.markAsUntouched();
+          this.ls.log('AddNewPlanComponent - success add');
           return true;
         })
       } else {
         return this.dataService.edit('plans', { _id: this.editingObj['_id'] }, plan).then(x => {
           this.planForm.reset();
           this.planForm.markAsUntouched();
+          this.ls.log('AddNewPlanComponent - success edit');
           return true;
         })
       }
     } else {
+      this.ls.log('AddNewPlanComponent - validation error');
       return false;
     }
   }
 
   public showError() {
-    // do nothing
+    this.ls.log('AddNewPlanComponent - showError');
   }
 
   private validatorPositive(con: AbstractControl): ValidationErrors | null {

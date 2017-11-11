@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {DataService} from "../../../../providers/data.service";
 import {IContext} from "../../IContext";
 import {ModalSize, ModalTemplate, SuiModalService, TemplateModalConfig} from "ng2-semantic-ui";
+import {LoggerService} from "../../../../providers/logger.service";
 
 @Component({
   selector: 'app-view-customer',
@@ -14,11 +15,12 @@ export class ViewCustomerComponent implements OnInit {
 
   selectedCustomer = {};
 
-  constructor(private dataService: DataService, private modalService: SuiModalService) {
-
+  constructor(private dataService: DataService, private modalService: SuiModalService, private lS: LoggerService) {
+    this.lS.log('ViewCustomerComponent - constructor');
   }
 
   open(id) {
+    this.lS.log('ViewCustomerComponent - open - ' + JSON.stringify(id));
     const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
     config.size = ModalSize.Tiny;
     if (typeof id === 'string') {

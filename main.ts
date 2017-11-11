@@ -1,6 +1,6 @@
-import {app, BrowserWindow, screen} from 'electron';
-import {dbCalls} from './datastore/nedb_service';
-import * as fs from 'fs';
+import {app, BrowserWindow, screen} from "electron";
+import {dbCalls} from "./datastore/nedb_service";
+import * as fs from "fs";
 
 const ipc = require('electron').ipcMain;
 
@@ -71,20 +71,32 @@ try {
   // throw e;
 }
 
+const log = (msg: string) => {
+  const logName = 'log/log.log';
+  const logSize = 634880;
+  const x = new Date();
+  fs.appendFile(logName, x.toLocaleDateString() + ':' + x.toTimeString().substring(0, 9) + ' - ' + msg + '\n', err => {
+    if (!err) {
+      fs.stat(logName, (err2, stat) => {
+        if (stat.size > logSize) {
+          fs.rename(logName, 'log/' + new Date() + ' - old.log');
+        }
+      });
+    }
+  });
+};
+
 ipc.on('db_calls', (event, arg) => {
+  log('[main] db_calls ' + JSON.stringify(arg));
   dbCalls(arg, function (err, data) {
     event.sender.send('db_returns', {err: err, doc: data, unq: arg['unq']});
+    if (err) {
+      log('[main] db_calls - returns ' + JSON.stringify({err: err}));
+    }
+    log('[main] db_calls - returns ' + JSON.stringify({data: data}).substring(0, 100));
   });
 });
 
-
-// log.transports.file.level = 'warn';
-// log.transports.file.format = '{h}:{i}:{s}:{ms} {text}';
-// log.transports.file.maxSize = 5 * 1024 * 1024;
-// log.transports.file.file = '/log.txt';
-// log.transports.file.streamConfig = { flags: 'ax+' };
-// log.transports.file.stream = fs.createWriteStream('log.txt');
-
 ipc.on('log_calls', (event, arg) => {
-  fs.writeFile('log.txt', 'Hey there!');
+  log('[renderer] ' + arg['msg']);
 });

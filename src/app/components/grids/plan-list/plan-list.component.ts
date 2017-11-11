@@ -4,6 +4,7 @@ import { IContext } from '../../dialogs/IContext';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { DataService } from '../../../providers/data.service';
 import { DISTRICT_MAP } from '../../../const/districts';
+import {LoggerService} from "../../../providers/logger.service";
 
 @Component({
   selector: 'app-plan-list',
@@ -32,7 +33,8 @@ export class PlanListComponent implements OnInit {
   ];
   searchSelected = 'all';
 
-  constructor(private dataService: DataService, private modalService: SuiModalService) {
+  constructor(private dataService: DataService, private modalService: SuiModalService, private ls: LoggerService) {
+    this.ls.log('PlanListComponent - constructor');
     this.dataService.find('plans', {}).then(x => {
       this.rows = x.doc;
       this.temp = [...x.doc];
@@ -43,6 +45,7 @@ export class PlanListComponent implements OnInit {
   }
 
   updated(obj?: any) {
+    this.ls.log('PlanListComponent - update ' + JSON.stringify(obj));
     if (obj) {
       this.dataService.find('plans', { _id: obj }).then(data => {
         this.rows[this.rows.indexOf(this.editingSelect)] = data.doc[0];
@@ -56,6 +59,7 @@ export class PlanListComponent implements OnInit {
   }
 
   removeRow(obj: any) {
+    this.ls.log('PlanListComponent - removeRow ' + JSON.stringify(obj));
     const config = new TemplateModalConfig<IContext, string, string>(this.removeConfirmTemp);
     config.closeResult = 'closed!';
     config.size = ModalSize.Tiny;
@@ -63,7 +67,7 @@ export class PlanListComponent implements OnInit {
     this.modalService
       .open(config)
       .onApprove(result => {
-        console.log(result);
+        this.ls.log('PlanListComponent - remove approve');
         this.dataService.remove('plans', { _id: obj._id }).then(doc => {
           if (doc['doc'] === 1) {
             const index1 = this.rows.indexOf(obj);
@@ -74,6 +78,7 @@ export class PlanListComponent implements OnInit {
             if (index2 !== -1) {
               this.temp.splice(index2, 1);
             }
+            this.ls.log('PlanListComponent - remove db success');
           }
         })
       });

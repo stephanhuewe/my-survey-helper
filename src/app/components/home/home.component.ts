@@ -7,6 +7,7 @@ import {CustomerListComponent} from '../grids/customer-list/customer-list.compon
 import {PlanListComponent} from '../grids/plan-list/plan-list.component';
 import {CoatOrderListComponent} from '../grids/coat-order-list/coat-order-list.component';
 import {SecreteDebugComponent} from '../secrete-debug/secrete-debug.component';
+import {LoggerService} from "../../providers/logger.service";
 
 @Component({
   selector: 'app-home',
@@ -27,23 +28,27 @@ export class HomeComponent {
 
   @ViewChild('debug') public debug: SecreteDebugComponent;
 
-  constructor(private modalService: SuiModalService) {
-
+  constructor(private modalService: SuiModalService, private ls: LoggerService) {
+    this.ls.log('HomeComponent - constructor');
   }
 
   public addCustomer(obj: any) {
+    this.ls.log('HomeComponent - addCustomer');
     this.addCustomerComponent.open(obj);
   }
 
   public addPlan(obj: any) {
+    this.ls.log('HomeComponent - addPlan');
     this.addPlanComponent.open(obj);
   }
 
   public addCoatOrder(obj: any) {
+    this.ls.log('HomeComponent - addCoatOrder');
     this.addNewCoatOrderForm.open(obj);
   }
 
   public updateSuccess(str: string, obj: any) {
+    this.ls.log('HomeComponent - updateSuccess - ' + str);
     if (str === 'customer' && this.customerListComp) {
       this.customerListComp.updated(obj);
     } else if (str === 'plan' && this.planListComp) {

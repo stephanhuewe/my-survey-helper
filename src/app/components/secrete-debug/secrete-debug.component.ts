@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {DataService} from "../../providers/data.service";
 import {DISTRICT_MAP} from "../../const/districts";
+import {LoggerService} from "../../providers/logger.service";
 
 @Component({
   selector: 'app-secrete-debug',
@@ -12,7 +13,7 @@ export class SecreteDebugComponent implements OnInit {
   diststricList = Object.keys(DISTRICT_MAP);
   customList = [];
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private logger: LoggerService) {
 
   }
 

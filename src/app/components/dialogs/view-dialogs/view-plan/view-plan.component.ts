@@ -3,6 +3,7 @@ import {ModalSize, ModalTemplate, SuiModalService, TemplateModalConfig} from "ng
 import {IContext} from "../../IContext";
 import {DataService} from "../../../../providers/data.service";
 import {DISTRICT_MAP} from "../../../../const/districts";
+import {LoggerService} from "../../../../providers/logger.service";
 
 @Component({
   selector: 'app-view-plan',
@@ -16,11 +17,12 @@ export class ViewPlanComponent implements OnInit {
   selectedPlan = {};
   districts = DISTRICT_MAP;
 
-  constructor(private dataService: DataService, private modalService: SuiModalService) {
-
+  constructor(private dataService: DataService, private modalService: SuiModalService, private ls: LoggerService) {
+    this.ls.log('ViewPlanComponent - constructor');
   }
 
   open(id) {
+    this.ls.log('ViewPlanComponent - open ' + JSON.stringify(id));
     const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
     config.size = ModalSize.Tiny;
     if (typeof id === 'string') {

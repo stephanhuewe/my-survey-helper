@@ -3,6 +3,7 @@ import { DataService } from '../../../providers/data.service';
 import { ModalSize, ModalTemplate, SuiModalService, TemplateModalConfig } from 'ng2-semantic-ui';
 import { IContext } from '../../dialogs/IContext';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
+import {LoggerService} from "../../../providers/logger.service";
 
 @Component({
   selector: 'app-customer-list',
@@ -31,7 +32,8 @@ export class CustomerListComponent implements OnInit {
   ];
   searchSelected = 'all';
 
-  constructor(private dataService: DataService, private modalService: SuiModalService) {
+  constructor(private dataService: DataService, private modalService: SuiModalService, private ls: LoggerService) {
+    this.ls.log('CustomerListComponent - constructor');
     this.dataService.find('customers', {}).then(x => {
       x.doc.forEach(c => {
         this.dataService.find('plans', {customer : c._id}).then(p => {
@@ -48,6 +50,7 @@ export class CustomerListComponent implements OnInit {
   }
 
   updated(obj?: any) {
+    this.ls.log('CustomerListComponent - update ' + JSON.stringify(obj));
     if (obj) {
       this.dataService.find('customers', { _id: obj }).then(data => {
         this.rows[this.rows.indexOf(this.editingSelect)] = data.doc[0];
@@ -61,6 +64,7 @@ export class CustomerListComponent implements OnInit {
   }
 
   removeRow(obj: any) {
+    this.ls.log('CustomerListComponent - removeRow ' + JSON.stringify(obj));
     const config = new TemplateModalConfig<IContext, string, string>(this.removeConfirmTemp);
     config.closeResult = 'closed!';
     config.size = ModalSize.Tiny;
@@ -68,7 +72,7 @@ export class CustomerListComponent implements OnInit {
     this.modalService
       .open(config)
       .onApprove(result => {
-        console.log(result);
+        this.ls.log('CustomerListComponent - approve remove');
         this.dataService.remove('customers', { _id: obj._id }).then(doc => {
           if (doc['doc'] === 1) {
             const index1 = this.rows.indexOf(obj);
@@ -79,6 +83,7 @@ export class CustomerListComponent implements OnInit {
             if (index2 !== -1) {
               this.temp.splice(index2, 1);
             }
+            this.ls.log('CustomerListComponent - remove db success');
           }
         })
       });

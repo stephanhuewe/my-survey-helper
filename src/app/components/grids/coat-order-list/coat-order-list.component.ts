@@ -4,6 +4,7 @@ import { IContext } from '../../dialogs/IContext';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { COATS } from '../../../const/coats';
 import { DataService } from '../../../providers/data.service';
+import {LoggerService} from "../../../providers/logger.service";
 
 @Component({
   selector: 'app-coat-order-list',
@@ -28,7 +29,8 @@ export class CoatOrderListComponent implements OnInit {
   ];
   searchSelected = 'all';
 
-  constructor(private dataService: DataService, private modalService: SuiModalService) {
+  constructor(private dataService: DataService, private modalService: SuiModalService, private ls: LoggerService) {
+    this.ls.log('CoatOrderListComponent - constructor');
     this.dataService.find('coat_orders', {}).then(x => {
       this.rows = x.doc;
       this.temp = [...x.doc];
@@ -39,6 +41,7 @@ export class CoatOrderListComponent implements OnInit {
   }
 
   updated(obj?: any) {
+    this.ls.log('CoatOrderListComponent - update ' + JSON.stringify(obj));
     if (obj) {
       this.dataService.find('coat_orders', { _id: obj }).then(data => {
         this.rows[this.rows.indexOf(this.editingSelect)] = data.doc[0];
@@ -52,6 +55,7 @@ export class CoatOrderListComponent implements OnInit {
   }
 
   removeRow(obj: any) {
+    this.ls.log('CoatOrderListComponent - removeRow ' + JSON.stringify(obj));
     const config = new TemplateModalConfig<IContext, string, string>(this.removeConfirmTemp);
     config.closeResult = 'closed!';
     config.size = ModalSize.Tiny;
@@ -59,7 +63,7 @@ export class CoatOrderListComponent implements OnInit {
     this.modalService
       .open(config)
       .onApprove(result => {
-        console.log(result);
+        this.ls.log('CoatOrderListComponent - remove approve ');
         this.dataService.remove('coat_orders', { _id: obj._id }).then(doc => {
           if (doc['doc'] === 1) {
             const index1 = this.rows.indexOf(obj);
@@ -70,6 +74,7 @@ export class CoatOrderListComponent implements OnInit {
             if (index2 !== -1) {
               this.temp.splice(index2, 1);
             }
+            this.ls.log('CoatOrderListComponent - db remove success');
           }
         })
       });
