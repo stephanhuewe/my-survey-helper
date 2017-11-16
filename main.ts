@@ -1,6 +1,7 @@
-import {app, BrowserWindow, screen} from "electron";
-import {dbCalls} from "./datastore/nedb_service";
-import * as fs from "fs";
+import {app, BrowserWindow, screen} from 'electron';
+import {dbCalls} from './datastore/nedb_service';
+import * as fs from 'fs';
+import {test1} from './pdf-generator';
 
 const ipc = require('electron').ipcMain;
 
@@ -99,4 +100,8 @@ ipc.on('db_calls', (event, arg) => {
 
 ipc.on('log_calls', (event, arg) => {
   log('[renderer] ' + arg['msg']);
+});
+
+ipc.on('pdf_calls', (event, arg) => {
+  test1(arg);
 });

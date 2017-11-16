@@ -50,6 +50,8 @@
     "core-js": "2.4.1",
     "electron-log": "^2.2.11",
     "enhanced-resolve": "3.3.0",
+    "jspdf": "^1.3.5",
+    "jspdf-autotable": "^2.3.2",
     "nedb": "^1.8.0",
     "ng-validators": "^0.2.1",
     "ng2-semantic-ui": "^0.9.6",

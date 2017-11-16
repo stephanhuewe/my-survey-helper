@@ -2,6 +2,9 @@ import {Component, OnInit} from "@angular/core";
 import {DataService} from "../../providers/data.service";
 import {DISTRICT_MAP} from "../../const/districts";
 import {LoggerService} from "../../providers/logger.service";
+import {ElectronService} from "../../providers/electron.service";
+
+declare let jsPDF: any; // Important
 
 @Component({
   selector: 'app-secrete-debug',
@@ -13,7 +16,7 @@ export class SecreteDebugComponent implements OnInit {
   diststricList = Object.keys(DISTRICT_MAP);
   customList = [];
 
-  constructor(private dataService: DataService, private logger: LoggerService) {
+  constructor(private dataService: DataService, private logger: LoggerService, private ele: ElectronService) {
 
   }
 
@@ -64,7 +67,6 @@ export class SecreteDebugComponent implements OnInit {
       });
     }
   }
-
 
   test_plan() {
     const txt = 'Whole wound wrote at whose to style in. Figure ye innate former do so we. Shutters but sir ' +
@@ -149,5 +151,22 @@ export class SecreteDebugComponent implements OnInit {
 
   randomNum(len: number) {
     return ('' + Math.random()).substring(2, 2 + len);
+  }
+
+
+  printTest() {
+    console.log('hi');
+    const columns = ['ID', 'Name', 'Country'];
+    const rows = [
+      [1, 'Shaw', 'Tanzania'],
+      [2, 'Nelson', 'Kazakhstan'],
+      [3, 'Garcia', 'Madagascar'],
+    ];
+
+// Only pt supported (not mm or in)
+    const doc = new jsPDF('p', 'pt');
+    doc.autoTable(columns, rows);
+    doc.save('table.pdf');
+
   }
 }
